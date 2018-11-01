@@ -320,3 +320,42 @@ voto_por_mpo %>%
                                              color = "transparent"))
 
 ggsave(filename = "por_18_mpos_gano_texcoco.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
+
+
+## Gráfica: % de votos a favor de una y otra opción en los 503 municipios en donde ganó la opción AICM + Toluca + Santa Lucía ----
+voto_por_mpo %>% 
+  filter(str_detect(opcion_ganadora, "Lucía"), suma_total != 0) %>% 
+  select(municipio, por_sta_lucia, por_texcoco) %>%
+  mutate(ranking = rank(-por_sta_lucia)) %>%
+  gather(key = opcion,
+         value = porcentaje,
+         -municipio, -ranking) %>% 
+  ggplot() +
+  geom_point(aes(porcentaje, fct_rev(fct_reorder(municipio, ranking)), color = opcion), size = 3) +
+  scale_x_continuous(limits = c(0, 101), breaks = seq(0, 100, 10)) +
+  scale_y_discrete(expand = c(0.01, 0.01)) +
+  scale_color_manual(values = c("salmon", "steelblue"), labels = c("AICM + Toluca + Santa Lucía    ", "Continuar NAICM en Texcoco")) +
+  labs(title = str_wrap("PORCENTAJE DE VOTOS A FAVOR DE CADA OPCIÓN EN LOS 503 MUNICIPIOS DONDE GANÓ LA OPCIÓN AICM + TOLUCA + SANTA LUCÍA", width = 125),
+       subtitle = "En diversos municipios la diferencia corresponde a los votos nulos",
+       x = "\nPorcentaje   ",
+       y = NULL,
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuentes: Mexico Decide",
+       col = NULL) +
+  tema +
+  theme(legend.direction = "vertical",
+        legend.position = c(0.85, 0.05),
+        legend.box.background = element_rect(fill = "#66666610", 
+                                             color = "transparent"),
+        legend.text = element_text(size = 28),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        plot.title = element_text(size = 44),
+        plot.subtitle = element_text(size = 34),
+        plot.caption = element_text(size = 32),
+        axis.text.x = element_text(size = 30),
+        axis.title.x = element_text(size = 32),
+        panel.grid.major.x = element_line(color = "grey20"))
+
+ggsave(filename = "por_503_mpos_gano_sta_lucia.png", path = "03_graficas/", width = 30, height = 20, dpi = 100)
+
