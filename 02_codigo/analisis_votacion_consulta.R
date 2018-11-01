@@ -141,6 +141,27 @@ voto_por_edo %>%
 
 ggsave(filename = "por_votos_por_estado.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
   
+
+## Gráfica: Votos acumulados diariamente a favor de cada opción de la consulta, por estado ---- 
+
+voto_acumulado_por_edo %>% 
+  ggplot() +
+  geom_line(aes(dia, acumulado_sta_lucia, group = estado), col = "salmon") +
+  geom_line(aes(dia, acumulado_texcoco, group = estado), col = "steelblue") +
+  scale_y_continuous(label = comma) +
+  facet_wrap(~ estado, ncol = 8) +
+  labs(title = str_wrap("NÚMERO ACUMULADO DE VOTOS A FAVOR DE CADA OPCIÓN DE LA CONSULTA, POR ESTADO", width = 70), 
+       x = "\nDía de votación",
+       y = "Número\n", 
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
+  tema + 
+  theme(strip.background =  element_rect(fill = "grey80", color = "grey80"),
+        strip.text = element_text(color = "white"),
+        axis.text.x = element_text(size = 12))
+
+ggsave(filename = "votos_acumulados_por_cada_opcion_por_estado.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
+
+
 ## Gráfica: Votos acumulados diariamente a favor de AICM, Toluca y Santa Lucía ----
 voto_acumulado_por_casilla %>% 
   ggplot() +
