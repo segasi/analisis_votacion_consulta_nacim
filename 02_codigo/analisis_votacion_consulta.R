@@ -119,9 +119,10 @@ voto_por_mpo %>%
   ggplot(aes(str_wrap(opcion_ganadora, width = 40), fill = opcion_ganadora)) +
   geom_bar() +
   geom_text(stat = "count", aes(label = comma(..count..), y = ..count..), vjust = -1.1, fontface = "bold", size = 8) +
-  scale_y_continuous(limits = c(0, 512)) +
+  scale_y_continuous(limits = c(0, 514)) +
   scale_fill_manual(values = c("salmon", "steelblue")) +
   labs(title = str_wrap("NÚMERO DE MUNICIPIOS EN LOS QUE CADA OPCIÓN DE LA CONSULTA OBTUVO LA MAYORÍA DE LOS VOTOS", width = 80),
+       subtitle = str_wrap("A pesar de que el comité organizador de la consulta anunció que instalarían casillas en 538 municipios, los datos publicados solo incluyen información de 524 municipios. En tres de ellos el número de votos es cero para las dos opciones.", width = 150),
        x = NULL,
        caption = "\nSebastián Garrido de Sierra / @segasi / Fuentes: Mexico Decide") +
   tema +
@@ -294,7 +295,7 @@ ggsave(filename = "treemap_texcoco_por_mpo.png", path = "03_graficas/", width = 
 
 
 
-## Gráfica: % de votos a favor de una y otra opción en los 21 municipios en donde ganó continuar el aeropuerto en Texcoco ----
+## Gráfica: % de votos a favor de una y otra opción en los 18 municipios en donde ganó continuar el aeropuerto en Texcoco ----
 voto_por_mpo %>% 
   filter(str_detect(opcion_ganadora, "Texcoco"), suma_total != 0) %>% 
   select(municipio, por_sta_lucia, por_texcoco) %>%
@@ -306,7 +307,7 @@ voto_por_mpo %>%
   geom_point(aes(porcentaje, fct_rev(fct_reorder(municipio, ranking)), color = opcion), size = 3) +
   scale_x_continuous(limits = c(18, 82), breaks = seq(20, 80, 10)) +
   scale_color_manual(values = c("salmon", "steelblue"), labels = c("AICM + Toluca + Santa Lucía    ", "Continuar NAICM en Texcoco")) +
-  labs(title = str_wrap("PORCENTAJE DE VOTOS A FAVOR DE CADA OPCIÓN EN LOS 21 MUNICIPIOS DONDE GANÓ CONTINUAR EL NAICM EN TEXCOCO", width = 65),
+  labs(title = str_wrap("PORCENTAJE DE VOTOS A FAVOR DE CADA OPCIÓN EN LOS 18 MUNICIPIOS DONDE GANÓ CONTINUAR EL NAICM EN TEXCOCO", width = 65),
        subtitle = "En Metepec la diferencia (24.2%) corresponde a los votos nulos",
        x = "\nPorcentaje",
        y = NULL,
@@ -318,4 +319,4 @@ voto_por_mpo %>%
         legend.box.background = element_rect(fill = "#66666610", 
                                              color = "transparent"))
 
-ggsave(filename = "por_21_mpos_gano_texcoco.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
+ggsave(filename = "por_18_mpos_gano_texcoco.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
