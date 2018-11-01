@@ -115,6 +115,7 @@ ggsave(filename = "casillas_gano_cada_opcion.png", path = "03_graficas/", width 
 
 ## Gráfica: Número de municipios en los que ganó una u otra opción ----
 voto_por_mpo %>% 
+  filter(suma_total != 0) %>% # Eliminar municipios en los que no hay votos
   ggplot(aes(str_wrap(opcion_ganadora, width = 40), fill = opcion_ganadora)) +
   geom_bar() +
   geom_text(stat = "count", aes(label = comma(..count..), y = ..count..), vjust = -1.1, fontface = "bold", size = 8) +
