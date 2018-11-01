@@ -74,7 +74,28 @@ voto_acumulado_por_casilla <-
          acumulado_total = cumsum(total),
          opcion_ganadora = ifelse(acumulado_texcoco >= acumulado_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) 
 
-### Gráficas
+### Gráficas ----
+## Gráfica: Número de casillas en las que ganó una u otra opción ----
+voto_por_casilla %>% 
+  ggplot(aes(str_wrap(opcion_ganadora, width = 40), fill = opcion_ganadora)) +
+  geom_bar() +
+  geom_text(stat = "count", aes(label = comma(..count..), y = ..count..), vjust = -1.1, fontface = "bold", size = 8) +
+  scale_y_continuous(limits = c(0, 1050)) +
+  scale_fill_manual(values = c("salmon", "steelblue")) +
+  labs(title = str_wrap("NÚMERO DE CASILLAS EN LAS QUE CADA OPCIÓN DE LA CONSULTA OBTUVO EL MAYOR NÚMERO DE VOTOS", width = 70),
+       x = NULL,
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuentes: Mexico Decide") +
+  tema +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(), 
+        panel.grid.major = element_blank(),
+        legend.position = "none")
+
+ggsave(filename = "casillas_gano_cada_opcion.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
+
+
+
 ## Gráfica: % de votos a favor de cada opción, por estado ----
 voto_por_edo %>% 
   select(estado, por_texcoco, por_sta_lucia) %>% 
