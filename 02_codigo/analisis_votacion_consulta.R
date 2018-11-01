@@ -100,7 +100,7 @@ voto_por_casilla %>%
   geom_text(stat = "count", aes(label = comma(..count..), y = ..count..), vjust = -1.1, fontface = "bold", size = 8) +
   scale_y_continuous(limits = c(0, 1050)) +
   scale_fill_manual(values = c("salmon", "steelblue")) +
-  labs(title = str_wrap("NÚMERO DE CASILLAS EN LAS QUE CADA OPCIÓN DE LA CONSULTA OBTUVO EL MAYOR NÚMERO DE VOTOS", width = 70),
+  labs(title = str_wrap("NÚMERO DE CASILLAS EN LAS QUE CADA OPCIÓN DE LA CONSULTA OBTUVO EL MAYOR NÚMERO DE VOTOS", width = 80),
        x = NULL,
        caption = "\nSebastián Garrido de Sierra / @segasi / Fuentes: Mexico Decide") +
   tema +
