@@ -157,3 +157,20 @@ voto_por_edo %>%
   theme(legend.position = "none")
 
 ggsave(filename = "treemap_sta_lucia_por_edo.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
+
+### Gráfica: Aportación de votos a favor de NAICM por estado ----
+voto_por_edo %>% 
+  mutate(por_edo_texcoco = round((suma_texcoco/sum(suma_texcoco))*100, 1)) %>% 
+  ggplot() +
+  geom_treemap(aes(area = suma_texcoco, fill = suma_texcoco), col = "white") +
+  geom_treemap_text(aes(area = suma_texcoco, label = estado), fontface = "bold", color = "white") +
+  geom_treemap_text(aes(area = suma_texcoco, label = comma(suma_texcoco)), color = "white", padding.y = unit(8, "mm"), size = 16) +
+  geom_treemap_text(aes(area = suma_texcoco, label = paste(por_edo_texcoco, "% del total", sep = "")), color = "white", padding.y = unit(14.5, "mm"), size = 15) +
+  scale_fill_gradient(low = "grey80", high = "steelblue", guide = guide_colorbar(barwidth = 18, nbins = 6), labels = comma, breaks = pretty_breaks(n = 6)) +
+  labs(title = str_wrap("APORTACIÓN DE VOTOS A FAVOR DE LA OPCIÓN DE CONTINUAR CONSTRUYENDO EL NAICM EN TEXCOCO, POR ESTADO", width = 80),
+       subtitle = str_wrap("El tamaño de cada rectángulo es proporcional al número de votos a favor de la opción de continuar el NAICM en Texcoco. Mientras más grande y azul el recuadro, mayor el número de votos aportados por dicha entidad.", width = 150),
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
+  tema +
+  theme(legend.position = "none")
+
+ggsave(filename = "treemap_texcoco_por_edo.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
