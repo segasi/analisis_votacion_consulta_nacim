@@ -292,3 +292,30 @@ voto_por_mpo %>%
 
 ggsave(filename = "treemap_texcoco_por_mpo.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
 
+
+
+## Gráfica: % de votos a favor de una y otra opción en los 21 municipios en donde ganó continuar el aeropuerto en Texcoco ----
+voto_por_mpo %>% 
+  filter(str_detect(opcion_ganadora, "Texcoco"), suma_total != 0) %>% 
+  select(municipio, por_sta_lucia, por_texcoco) %>%
+  mutate(ranking = rank(-por_texcoco)) %>%
+  gather(key = opcion,
+         value = porcentaje,
+         -municipio, -ranking) %>% 
+  ggplot() +
+  geom_point(aes(porcentaje, fct_rev(fct_reorder(municipio, ranking)), color = opcion), size = 3) +
+  scale_x_continuous(limits = c(18, 82), breaks = seq(20, 80, 10)) +
+  scale_color_manual(values = c("salmon", "steelblue"), labels = c("AICM + Toluca + Santa Lucía    ", "Continuar NAICM en Texcoco")) +
+  labs(title = str_wrap("PORCENTAJE DE VOTOS A FAVOR DE CADA OPCIÓN EN LOS 21 MUNICIPIOS DONDE GANÓ CONTINUAR EL NAICM EN TEXCOCO", width = 65),
+       subtitle = "En Metepec la diferencia (24.2%) corresponde a los votos nulos",
+       x = "\nPorcentaje",
+       y = NULL,
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuentes: Mexico Decide",
+       col = NULL) +
+  tema +
+  theme(legend.direction = "vertical",
+        legend.position = c(0.85, 0.1),
+        legend.box.background = element_rect(fill = "#66666610", 
+                                             color = "transparent"))
+
+ggsave(filename = "por_21_mpos_gano_texcoco.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
