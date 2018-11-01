@@ -174,3 +174,21 @@ voto_por_edo %>%
   theme(legend.position = "none")
 
 ggsave(filename = "treemap_texcoco_por_edo.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
+
+
+## Gráfica: Aportación de votos a favor de AICM, Toluca y Santa Lucía, por municipio ----
+voto_por_mpo %>% 
+  mutate(por_edo_sta_lucia = round((suma_sta_lucia/sum(suma_sta_lucia))*100, 1)) %>% 
+  ggplot() +
+  geom_treemap(aes(area = suma_sta_lucia, fill = suma_sta_lucia), col = "white") +
+  geom_treemap_text(aes(area = suma_sta_lucia, label = municipio), fontface = "bold", color = "white") +
+  geom_treemap_text(aes(area = suma_sta_lucia, label = comma(suma_sta_lucia)), color = "white", padding.y = unit(8, "mm"), size = 16) +
+  geom_treemap_text(aes(area = suma_sta_lucia, label = paste(por_edo_sta_lucia, "% del total", sep = "")), color = "white", padding.y = unit(14.5, "mm"), size = 15) +
+  scale_fill_gradient(low = "grey80", high = "salmon", guide = guide_colorbar(barwidth = 18, nbins = 6), labels = comma, breaks = pretty_breaks(n = 6)) +
+  labs(title = str_wrap("APORTACIÓN DE VOTOS A FAVOR DE LA OPCIÓN AICM + TOLUCA + SANTA LUCÍA, POR MUNICIPIO", width = 90),
+       subtitle = str_wrap("El tamaño de cada rectángulo es proporcional al número de votos a favor de la opción AICM + Toluca + Santa Lucía. Mientras más grande y rojo el recuadro, mayor el número de votos aportados por dicho municipio.", width = 150),
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
+  tema +
+  theme(legend.position = "none")
+
+ggsave(filename = "treemap_sta_lucia_por_mpo.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
