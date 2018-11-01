@@ -72,7 +72,8 @@ voto_acumulado_por_casilla <-
          acumulado_texcoco = cumsum(Opcion2_continuar_construccion_en_texcoco),
          acumulado_nulos =cumsum(nulos),
          acumulado_total = cumsum(total),
-         opcion_ganadora = ifelse(acumulado_texcoco >= acumulado_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) 
+         opcion_ganadora = ifelse(acumulado_texcoco >= acumulado_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) %>% 
+  ungroup()
 
 ### Gráficas ----
 ## Gráfica: Número de casillas en las que ganó una u otra opción ----
@@ -149,7 +150,7 @@ voto_acumulado_por_casilla %>%
             color = "steelblue", alpha = 0.5) +
   scale_y_continuous(limits = c(0, 5000), label = comma) +
   facet_wrap(~ estado, ncol = 8) +
-  labs(title = "NÚMERO ACUMULADO DE VOTOS A FAVOR DE LA OPCIÓN DE CONTINUAR CONSTRUYENDO EL NAICM EN TEXCOCO, POR CASILLA",
+  labs(title = str_wrap("NÚMERO ACUMULADO DE VOTOS A FAVOR DE LA OPCIÓN DE CONTINUAR EL NAICM EN TEXCOCO, POR CASILLA", width = 70),
        x = "\nDía de votación",
        y = "Número\n", 
        caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
