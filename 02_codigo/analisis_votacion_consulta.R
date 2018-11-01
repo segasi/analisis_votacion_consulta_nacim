@@ -75,6 +75,23 @@ voto_acumulado_por_casilla <-
          opcion_ganadora = ifelse(acumulado_texcoco >= acumulado_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) %>% 
   ungroup()
 
+## Votación acumulada por estado y día ----
+voto_acumulado_por_edo <- 
+  bd %>% 
+  group_by(estado, dia) %>% 
+  summarise(suma_diaria_sta_lucia = sum(Opcion1_Actual_mas_Toluca_y_StLucia),
+            suma_diaria_texcoco = sum(Opcion2_continuar_construccion_en_texcoco),
+            suma_diaria_nulos = sum(nulos),
+            suma_diaria_total = sum(total)) %>% 
+  ungroup() %>% 
+  group_by(estado) %>% 
+  mutate(acumulado_sta_lucia = cumsum(suma_diaria_sta_lucia),
+         acumulado_texcoco = cumsum(suma_diaria_texcoco),
+         acumulado_nulos =cumsum(suma_diaria_nulos),
+         acumulado_total = cumsum(suma_diaria_total),
+         opcion_ganadora = ifelse(acumulado_texcoco >= acumulado_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) %>% 
+  ungroup() 
+
 ### Gráficas ----
 ## Gráfica: Número de casillas en las que ganó una u otra opción ----
 voto_por_casilla %>% 
