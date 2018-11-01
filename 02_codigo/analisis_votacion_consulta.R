@@ -92,4 +92,21 @@ voto_acumulado_por_casilla %>%
 
 ggsave(filename = "votos_acumulados_por_casilla_aicm_toluca_sta_lucia.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
 
-  
+
+# Gráfica: Votos acumulados diariamente a favor de NAICM por casilla ----
+voto_acumulado_por_casilla %>% 
+  ggplot() +
+  geom_line(aes(dia, acumulado_texcoco, group = idcasilla),
+            color = "steelblue", alpha = 0.5) +
+  scale_y_continuous(limits = c(0, 5000), label = comma) +
+  facet_wrap(~ estado, ncol = 8) +
+  labs(title = "NÚMERO ACUMULADO DE VOTOS A FAVOR DE LA OPCIÓN DE CONTINUAR CONSTRUYENDO EL NAICM EN TEXCOCO, POR CASILLA",
+       x = "\nDía de votación",
+       y = "Número\n", 
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
+  tema +
+  theme(strip.background =  element_rect(fill = "grey80", color = "grey80"),
+        strip.text = element_text(color = "white"),
+        axis.text.x = element_text(size = 14))
+
+ggsave(filename = "votos_acumulados_por_casilla_texcoco.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)  
