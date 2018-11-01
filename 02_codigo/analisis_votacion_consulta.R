@@ -73,8 +73,36 @@ voto_acumulado_por_casilla <-
          acumulado_nulos =cumsum(nulos),
          acumulado_total = cumsum(total),
          opcion_ganadora = ifelse(acumulado_texcoco >= acumulado_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) 
+
+### Gráficas
+## Gráfica: % de votos a favor de cada opción, por estado ----
+voto_por_edo %>% 
+  select(estado, por_texcoco, por_sta_lucia) %>% 
+  mutate(ranking_sta_lucia = rank(por_sta_lucia, ties.method = "first")) %>% 
+  gather(key = opcion,
+         value = porcentaje,
+         -estado, -ranking_sta_lucia) %>% 
+  ggplot() +
+  geom_col(aes(fct_reorder(estado, ranking_sta_lucia), porcentaje, fill = opcion)) +
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0, 100, 10), limits = c(0, 102)) +
+  scale_fill_manual(values = c("salmon", "steelblue"), labels = c("AICM + Toluca + Santa Lucía    ", "Continuar NAICM en Texcoco")) +
+  coord_flip() +
+  labs(title = "PORCENTAJE DE VOTOS A FAVOR DE CADA OPCIÓN, POR ESTADO",
+       subtitle = "Las barras no suman 100% porque no incluyo el porcentaje de votos nulos",
+       x = NULL, 
+       y = "\nPorcentaje    ",
+       fill = NULL,
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
+  tema +
+  theme(strip.background =  element_rect(fill = "grey80", color = "grey80"),
+        strip.text = element_text(color = "white"),
+        axis.text.x = element_text(size = 14),
+        legend.position = c(0.22, -0.08),
+        legend.direction = "horizontal")
+
+ggsave(filename = "por_votos_por_estado.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
   
-# Gráfica: Votos acumulados diariamente a favor de AICM, Toluca y Santa Lucía ----
+## Gráfica: Votos acumulados diariamente a favor de AICM, Toluca y Santa Lucía ----
 voto_acumulado_por_casilla %>% 
   ggplot() +
   geom_line(aes(dia, acumulado_sta_lucia, group = idcasilla),
@@ -93,7 +121,7 @@ voto_acumulado_por_casilla %>%
 ggsave(filename = "votos_acumulados_por_casilla_aicm_toluca_sta_lucia.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
 
 
-# Gráfica: Votos acumulados diariamente a favor de NAICM por casilla ----
+## Gráfica: Votos acumulados diariamente a favor de NAICM por casilla ----
 voto_acumulado_por_casilla %>% 
   ggplot() +
   geom_line(aes(dia, acumulado_texcoco, group = idcasilla),
@@ -110,3 +138,5 @@ voto_acumulado_por_casilla %>%
         axis.text.x = element_text(size = 14))
 
 ggsave(filename = "votos_acumulados_por_casilla_texcoco.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)  
+
+
