@@ -64,8 +64,8 @@ voto_acumulado_por_casilla <-
   group_by(idcasilla) %>% 
   mutate(acumulado_sta_lucia = cumsum(Opcion1_Actual_mas_Toluca_y_StLucia, na.rm = T),
          acumulado_texcoco = cumsum(Opcion2_continuar_construccion_en_texcoco, na.rm = T),
-         acumulado_nulos =cumsum(nulos, na.rm = T),
-         acumulado_total = cumsum(total, na.rm = T),
+         acumulado_nulos =cumsum(nulos),
+         acumulado_total = cumsum(total),
          opcion_ganadora = ifelse(acumulado_texcoco >= acumulado_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) 
   
 
