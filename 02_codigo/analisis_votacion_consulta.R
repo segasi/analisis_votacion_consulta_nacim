@@ -335,7 +335,7 @@ voto_por_mpo %>%
   scale_x_continuous(limits = c(0, 101), breaks = seq(0, 100, 10)) +
   scale_y_discrete(expand = c(0.01, 0.01)) +
   scale_color_manual(values = c("salmon", "steelblue"), labels = c("AICM + Toluca + Santa Lucía    ", "Continuar NAICM en Texcoco")) +
-  labs(title = str_wrap("PORCENTAJE DE VOTOS A FAVOR DE CADA OPCIÓN EN LOS 503 MUNICIPIOS DONDE GANÓ LA OPCIÓN AICM + TOLUCA + SANTA LUCÍA", width = 125),
+  labs(title = str_wrap("PORCENTAJE DE VOTOS A FAVOR DE CADA OPCIÓN EN LOS 503 MUNICIPIOS DONDE GANÓ LA OPCIÓN AICM + TOLUCA + SANTA LUCÍA", width = 85),
        subtitle = "En diversos municipios la diferencia corresponde a los votos nulos",
        x = "\nPorcentaje   ",
        y = NULL,
@@ -358,4 +358,4 @@ voto_por_mpo %>%
         panel.grid.major.x = element_line(color = "grey20"))
 
 ggsave(filename = "por_503_mpos_gano_sta_lucia.png", path = "03_graficas/", width = 30, height = 20, dpi = 100)
-
+x
