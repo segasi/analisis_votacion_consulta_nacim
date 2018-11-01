@@ -35,7 +35,8 @@ voto_por_casilla <- bd %>%
             suma_total = sum(total, na.rm = T)) %>% 
   ungroup() %>% 
   mutate(por_sta_lucia = round((suma_sta_lucia/suma_total)*100, 1),
-         por_texcoco = round((suma_texcoco/suma_total)*100, 1),opcion_ganadora = ifelse(suma_texcoco >= suma_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía"))
+         por_texcoco = round((suma_texcoco/suma_total)*100, 1),
+         opcion_ganadora = ifelse(suma_texcoco >= suma_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía"))
 
 ## Votación total por municipio ----
 voto_por_mpo <- bd %>% 
@@ -73,5 +74,22 @@ voto_acumulado_por_casilla <-
          acumulado_total = cumsum(total),
          opcion_ganadora = ifelse(acumulado_texcoco >= acumulado_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) 
   
+# Gráfica: Votos acumulados diariamente a favor de AICM, Toluca y Santa Lucía ----
+voto_acumulado_por_casilla %>% 
+  ggplot() +
+  geom_line(aes(dia, acumulado_sta_lucia, group = idcasilla),
+            color = "salmon", alpha = 0.5) +
+  scale_y_continuous(limits = c(0, 5000), label = comma) +
+  facet_wrap(~ estado, ncol = 8) +
+  labs(title = str_wrap("NÚMERO ACUMULADO DE VOTOS A FAVOR DE LA OPCIÓN AICM + TOLUCA + SANTA LUCÍA, POR CASILLA", width = 70), 
+       x = "\nDía de votación",
+       y = "Número\n", 
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
+  tema +
+  theme(strip.background =  element_rect(fill = "grey80", color = "grey80"),
+        strip.text = element_text(color = "white"),
+        axis.text.x = element_text(size = 14))
+
+ggsave(filename = "votos_acumulados_por_casilla_aicm_toluca_sta_lucia.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
 
   
