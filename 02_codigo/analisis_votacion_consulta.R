@@ -34,4 +34,19 @@ voto_por_casilla <- bd %>%
             suma_nulos = sum(nulos),
             suma_total = sum(total)) %>% 
   ungroup() %>% 
-  mutate(gano_texcoco = ifelse(suma_texcoco >= suma_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) 
+  mutate(opcion_ganadora = ifelse(suma_texcoco >= suma_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía"))
+
+
+## Votación acumulada por casilla ----
+voto_acumulado_por_casilla <- 
+  bd %>% 
+  arrange(idcasilla, dia) %>% 
+  group_by(idcasilla) %>% 
+  mutate(acumulado_sta_lucia = cumsum(Opcion1_Actual_mas_Toluca_y_StLucia),
+         acumulado_texcoco = cumsum(Opcion2_continuar_construccion_en_texcoco),
+         acumulado_nulos =cumsum(nulos),
+         acumulado_total = cumsum(total),
+         opcion_ganadora = ifelse(acumulado_texcoco >= acumulado_sta_lucia, "Opción de continuar la construcción del NAICM en Texcoco", "Opción AICM + Toluca + Santa Lucía")) 
+  
+
+  
