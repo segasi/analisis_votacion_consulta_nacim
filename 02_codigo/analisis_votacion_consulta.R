@@ -113,6 +113,26 @@ voto_por_casilla %>%
 ggsave(filename = "casillas_gano_cada_opcion.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
 
 
+## Gráfica: Número de municipios en los que ganó una u otra opción ----
+voto_por_mpo %>% 
+  ggplot(aes(str_wrap(opcion_ganadora, width = 40), fill = opcion_ganadora)) +
+  geom_bar() +
+  geom_text(stat = "count", aes(label = comma(..count..), y = ..count..), vjust = -1.1, fontface = "bold", size = 8) +
+  scale_y_continuous(limits = c(0, 512)) +
+  scale_fill_manual(values = c("salmon", "steelblue")) +
+  labs(title = str_wrap("NÚMERO DE MUNICIPIOS EN LOS QUE CADA OPCIÓN DE LA CONSULTA OBTUVO LA MAYORÍA DE LOS VOTOS", width = 80),
+       x = NULL,
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuentes: Mexico Decide") +
+  tema +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(), 
+        panel.grid.major = element_blank(),
+        legend.position = "none")
+
+ggsave(filename = "mpos_gano_cada_opcion.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
+
+
 
 ## Gráfica: % de votos a favor de cada opción, por estado ----
 voto_por_edo %>% 
