@@ -79,10 +79,10 @@ voto_acumulado_por_casilla <-
 voto_acumulado_por_edo <- 
   bd %>% 
   group_by(estado, dia) %>% 
-  summarise(suma_diaria_sta_lucia = sum(Opcion1_Actual_mas_Toluca_y_StLucia),
-            suma_diaria_texcoco = sum(Opcion2_continuar_construccion_en_texcoco),
-            suma_diaria_nulos = sum(nulos),
-            suma_diaria_total = sum(total)) %>% 
+  summarise(suma_diaria_sta_lucia = sum(Opcion1_Actual_mas_Toluca_y_StLucia, na.rm = T),
+            suma_diaria_texcoco = sum(Opcion2_continuar_construccion_en_texcoco, na.rm = T),
+            suma_diaria_nulos = sum(nulos, na.rm = T),
+            suma_diaria_total = sum(total, na.rm = T)) %>% 
   ungroup() %>% 
   group_by(estado) %>% 
   mutate(acumulado_sta_lucia = cumsum(suma_diaria_sta_lucia),
