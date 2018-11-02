@@ -359,3 +359,18 @@ voto_por_mpo %>%
 
 ggsave(filename = "por_503_mpos_gano_sta_lucia.png", path = "03_graficas/", width = 30, height = 20, dpi = 100)
 x
+
+
+## Gráfica: distribución de votos por minuto en casillas ----
+voto_por_casilla %>% 
+  mutate(votos_por_minuto = round(suma_total/(60*8*4), 1)) %>% 
+  ggplot() +
+  geom_histogram(aes(votos_por_minuto), breaks = seq(0, 4, 0.1667), fill = "steelblue", color = "white") +
+  labs(title = str_wrap("DISTRIBUCIÓN DE LOS VOTOS POR MINUTO RECIBIDOS EN LAS CASILLAS DE LA CONSULTA DEL NAICM", width = 80),
+       subtitle = str_wrap("Para este cálculo consideré que las casillas estuvieron en funcionamiento 1,920 minutos, equivalentes a 60 minutos x 8 horas x 4 días", width = 150), 
+       x = "\nVotos por minuto",
+       y = "Número de casillas\n",
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
+  tema
+
+ggsave(filename = "histograma_votos_por_minuto_por_casilla.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)  
