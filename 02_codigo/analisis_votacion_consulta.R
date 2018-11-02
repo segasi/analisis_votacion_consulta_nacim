@@ -374,3 +374,23 @@ voto_por_casilla %>%
   tema
 
 ggsave(filename = "histograma_votos_por_minuto_por_casilla.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)  
+
+## Gráfica: casillas que recibieron más de 2 votos por minuto ----
+voto_por_casilla %>% 
+  mutate(votos_por_minuto = round(suma_total/(60*8*4), 1),
+         ranking = rank(-votos_por_minuto, ties.method = "first")) %>% 
+  filter(ranking < 25) %>%
+  ggplot() +
+  geom_col(aes(fct_reorder(casilla, votos_por_minuto), votos_por_minuto), fill = "steelblue") +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 4.1)) +
+  labs(title = str_wrap("CASILLAS QUE RECIBIERON MÁS DE 2 VOTOS POR MINUTO EN LA CONSULTA DEL NAICM", width = 65),
+       subtitle = str_wrap("Para este cálculo consideré que las casillas estuvieron en funcionamiento 1,920 minutos, equivalentes a 60 minutos x 8 horas x 4 días", width = 120), 
+       x = NULL,
+       y = "\nVotos por minuto  ",
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
+  coord_flip() +
+  tema
+
+ggsave(filename = "casillas_mas_de_2_votos_por_minuto.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)  
+
+
