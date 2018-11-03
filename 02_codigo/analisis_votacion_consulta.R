@@ -396,3 +396,29 @@ voto_por_casilla %>%
 ggsave(filename = "casillas_mas_de_2_votos_por_minuto.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)  
 
 
+## Gráfica: casillas que recibieron 2.5 votos por minuto o más al día ---- 
+pos <- position_jitter(width = 0.3, height = 0.05, seed = 1)
+
+foo <- bd %>% 
+  mutate(votos_por_minuto = round(total/(60*10), 1),
+         etiqueta = ifelse(votos_por_minuto >= 2.5, str_to_title(casilla), NA),
+         color_puntos = ifelse(votos_por_minuto >= 2.5, "Sí", "No")) %>% 
+  ggplot(aes(dia, votos_por_minuto)) +
+  geom_point(aes(color = color_puntos), 
+             position = pos, 
+             alpha = 0.6) +
+  geom_text_repel(aes(label = etiqueta), position = pos, segment.color = "grey80",segment.alpha = 0.7) +
+  geom_vline(xintercept = seq(25.5, 27.5, 1), color = "tomato", linetype = 3) +
+  scale_y_continuous(breaks = seq(0, 5, 0.5)) +
+  scale_color_manual(values = c("steelblue", "salmon")) +
+  labs(title = str_wrap("CASILLAS QUE RECIBIERON 2.5 VOTOS POR MINUTO O MÁS EN ALGUNO DE LOS CUATRO DÍAS DE LA CONSULTA DEL NAICM", width = 75),
+       subtitle = str_wrap("Cada punto representa a una mesa de votación en un día. Los puntos rojos corresponden a aquellas casillas donde se recibieron 2.5 votos por minuto o más en el día correspondiente. Para este cálculo consideré que las casillas estuvieron en funcionamiento 600 minutos al día, equivalentes a 60 minutos x 10 horas", width = 140),
+       x = NULL,
+       y = "\nVotos por minuto  \n",
+       caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
+  tema +
+  theme(panel.grid.major.x = element_blank(),
+        legend.position = "none")
+
+ggsave(foo, filename = "casillas_mas_de_2.5_votos_por_minuto_diario.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)
+
