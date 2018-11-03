@@ -1,6 +1,6 @@
 ### Paquetes ----
 library(pacman)
-p_load(scales, tidyverse, treemapify)
+p_load(ggrepel, scales, tidyverse, treemapify)
 
 ### Cargar datos ----
 bd <- read_csv("01_datos/resultado_mesas20181029-1830.csv")
