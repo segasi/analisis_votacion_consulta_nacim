@@ -363,30 +363,32 @@ x
 
 ## Gráfica: distribución de votos por minuto en casillas ----
 voto_por_casilla %>% 
-  mutate(votos_por_minuto = round(suma_total/(60*8*4), 1)) %>% 
+  mutate(votos_por_minuto = round(suma_total/(60*10*4), 1)) %>% 
   ggplot() +
-  geom_histogram(aes(votos_por_minuto), breaks = seq(0, 4, 0.1667), fill = "steelblue", color = "white") +
+  geom_histogram(aes(votos_por_minuto), breaks = seq(0, 3.5, 0.1667), fill = "steelblue", color = "white") +
   labs(title = str_wrap("DISTRIBUCIÓN DE LOS VOTOS POR MINUTO RECIBIDOS EN LAS CASILLAS DE LA CONSULTA DEL NAICM", width = 80),
-       subtitle = str_wrap("Para este cálculo consideré que las casillas estuvieron en funcionamiento 1,920 minutos, equivalentes a 60 minutos x 8 horas x 4 días", width = 150), 
-       x = "\nVotos por minuto",
+       subtitle = str_wrap("Para este cálculo consideré que las casillas estuvieron en funcionamiento 2,400 minutos,* equivalentes a 60 minutos x 10 horas x 4 días", width = 150),
+       caption = "Nota: La versión original de esta gráfica consideraba, por error, que las casillas funcionaron 8 horas diarias, cuando lo hicieron por 10.",
+       x = "\nVotos por minuto\n",
        y = "Número de casillas\n",
        caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
   tema
 
 ggsave(filename = "histograma_votos_por_minuto_por_casilla.png", path = "03_graficas/", width = 15, height = 10, dpi = 100)  
 
-## Gráfica: casillas que recibieron más de 2 votos por minuto ----
+## Gráfica: casillas que recibieron más de 1.5 votos por minuto ----
 voto_por_casilla %>% 
-  mutate(votos_por_minuto = round(suma_total/(60*8*4), 1),
+  mutate(votos_por_minuto = round(suma_total/(60*10*4), 1),
          ranking = rank(-votos_por_minuto, ties.method = "first")) %>% 
   filter(ranking < 25) %>%
   ggplot() +
   geom_col(aes(fct_reorder(casilla, votos_por_minuto), votos_por_minuto), fill = "steelblue") +
-  scale_y_continuous(expand = c(0, 0), limits = c(0, 4.1)) +
-  labs(title = str_wrap("CASILLAS QUE RECIBIERON MÁS DE 2 VOTOS POR MINUTO EN LA CONSULTA DEL NAICM", width = 65),
-       subtitle = str_wrap("Para este cálculo consideré que las casillas estuvieron en funcionamiento 1,920 minutos, equivalentes a 60 minutos x 8 horas x 4 días", width = 120), 
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 3.3)) +
+  labs(title = str_wrap("CASILLAS QUE RECIBIERON MÁS DE 1.5 VOTOS POR MINUTO EN LA CONSULTA DEL NAICM", width = 65),
+       subtitle = str_wrap("Para este cálculo consideré que las casillas estuvieron en funcionamiento 2,400 minutos,* equivalentes a 60 minutos x 10 horas x 4 días", width = 120),
+       caption = "Nota: La versión original de esta gráfica consideraba, por error, que las casillas funcionaron 8 horas diarias, cuando lo hicieron por 10.",
        x = NULL,
-       y = "\nVotos por minuto  ",
+       y = "\nVotos por minuto  \n",
        caption = "\nSebastián Garrido de Sierra / @segasi / Fuente: México Decide") +
   coord_flip() +
   tema
